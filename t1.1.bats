@@ -28,17 +28,38 @@
    }
 
 @test "1.1.8 - LDAP for authentication is configured" {
-   systemctl status slapd
-   }
-@test "1.1.9 - The database are started and running" {
+   systemctl status slapd   
+}
+
+@test "1.1.9 - Controller is configured to use SSSD" {
+   systemctl status sssd.service
+}
+
+@test "1.1.10 - The database are started and running" {
    systemctl status mariadb
    systemctl status mongod
    }
 
-@test "1.1.10 - The dhcp server is running" {
-  systemctl status dhcpd
-}
+@test "1.1.11 - Slurm and Munge are started and running" {
+   systemctl status slurm
+   systemctl status munge
+   }
 
-@test "1.1.11 - DRBD is configured" {
+@test "1.1.12 - The dhcp server is running" {
+  systemctl status dhcpd
+  }
+
+
+@test "1.1.13 - Monitoring server is running" {
+  systemctl status zabbix-server
+  }
+
+
+@test "1.1.13 - DNS is working on the controller" {
+   skip Not yet in luna
+   host controller localhost
+}
+@test "1.1.13 - DRBD is configured" {
+   skip Not yet in configuration
    systemctl status drbd.service
    }
