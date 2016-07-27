@@ -55,11 +55,33 @@
   }
 
 
-@test "1.1.13 - DNS is working on the controller" {
-   skip Not yet in luna
+@test "1.1.14 - DNS is working on the controller" {
+   skip "Not yet in luna"
    host controller localhost
 }
-@test "1.1.13 - DRBD is configured" {
-   skip Not yet in configuration
+@test "1.1.15 - DRBD is configured" {
+   skip "Not yet in configuration"
    systemctl status drbd.service
    }
+
+@test "1.1.16 - RABBITMQ is running and cluster is up" {
+   systemctl status rabbit-server.service
+   rabbitmqctl status | grep running_nodes | grep rabbit@${hostname}
+   rabbitmqctl list_users | grep openstack
+  }
+@test "1.1.17 - the appropriate openstack services are active" {
+   status=$(openstack-status)
+   echo $status | grep "nova-api:[ ]*active"
+   echo $status | grep "nova-compute:[ ]*active"
+   echo $status | grep "nova-neutron-server:[ ]*active"
+   echo $status | grep "nova-neutron-dhcp-agent:[ ]*active"
+   echo $status | grep "nova-scheduler:[ ]*active"
+   echo $status | grep "openstack-dashboard:[ ]*active"
+   echo $status | grep "dbus:[ ]*active"
+   echo $status | grep "memcached:[ ]*active"
+   echo $status | grep "openstack-cinder-api:[ ]*active"
+   echo $status | grep "openstack-cinder-scheduler:[ ]*active"
+   echo $status | grep "rabbitmq-server:[ ]*active"
+   echo $status | grep "openstack-glance-registry:[ ]*active"
+   echo $status | grep "openstack-glance-api:[ ]*active"
+  }
