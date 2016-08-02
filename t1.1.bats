@@ -41,6 +41,7 @@
    }
 
 @test "1.1.11 - Slurm and Munge are started and running" {
+   systemctl status slurmdbd
    systemctl status slurm
    systemctl status munge
    }
@@ -50,8 +51,10 @@
   }
 
 
-@test "1.1.13 - Monitoring server is running" {
+@test "1.1.13 - Monitoring server is running and it's DB is accessible" {
+  systemctl status httpd
   systemctl status zabbix-server
+  mysql -uzabbix -p localhost -h -e "use zabbix; show tables" | head -2 && echo $?
   }
 
 
